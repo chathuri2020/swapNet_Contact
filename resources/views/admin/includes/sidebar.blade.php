@@ -81,6 +81,14 @@
             </h6>
             <ul class="nav flex-column mb-2">
             <li class="nav-item">
+                <a class="nav-link {{ (request()->is('admin/contact-create*')) ? 'active' : '' }}"
+                    href="{{ route('admin.contact.create') }}">
+                        <span data-feather="briefcase" class="align-text-bottom"></span>
+                       Contacts
+                    </a>
+
+                </li>
+            <li class="nav-item">
                 <a class="nav-link {{ (request()->is('admin/category*')) ? 'active' : '' }}"
                     href="{{ route('admin.category.edit') }}">
                         <span data-feather="list" class="align-text-bottom"></span>

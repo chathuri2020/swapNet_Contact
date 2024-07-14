@@ -18,4 +18,9 @@ class SubcategoryLevelTwo extends Model
     {
         return $this->belongsTo(SubcategoryLevelOne::class, 'category_l_one_id');
     }
+
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class, 'category_contact');
+    }
 }

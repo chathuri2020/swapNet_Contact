@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
 
 Auth::routes();
 
@@ -22,6 +23,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::get('change-password', [CategoryController::class, 'password'])->name('password.index');
     Route::put('update-password', [CategoryController::class, 'updatePassword'])->name('password.update'); */
 
+
+
+      // contact
+      Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+      Route::get('contact-create', [ContactController::class, 'create'])->name('contact.create');
+      Route::post('contact-store', [ContactController::class, 'store'])->name('contact.store');
+  /*  Route::put('profile-update', [CategoryController::class, 'update'])->name('profile.update');
+      Route::get('change-password', [CategoryController::class, 'password'])->name('password.index');
+      Route::put('update-password', [CategoryController::class, 'updatePassword'])->name('password.update'); */
+  
 
     // profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');

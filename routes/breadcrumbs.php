@@ -63,3 +63,13 @@ Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail): void 
     $trail->parent('admin.index');
     $trail->push('Category', route('admin.category.edit'));
 });
+
+// contact
+Breadcrumbs::for('admin.contact.index', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.index');
+    $trail->push('Contact', route('admin.contact.index'));
+});
+Breadcrumbs::for('admin.contact.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.contact.index');
+    $trail->push('Add new Contact', route('admin.contact.create'));
+});
