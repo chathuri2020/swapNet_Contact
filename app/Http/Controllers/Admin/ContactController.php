@@ -25,9 +25,9 @@ class ContactController extends Controller
     {
         /* abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
  */
-        $permissions = Category::all()->pluck('name', 'id');
-
-        return view('admin.contact.create', compact('permissions'));
+        $permissions = Category::with('subcategoriesLevelOne.subcategoriesLevelTwo')->pluck('name', 'id');
+        $category = Category::with('subcategoriesLevelOne.subcategoriesLevelTwo')->pluck('name', 'id');
+        return view('admin.contact.create', compact('permissions', 'category'));
     }
 
     public function store(Request $request)
@@ -50,9 +50,8 @@ class ContactController extends Controller
         return redirect()->back();
     }
 
-    public function edit(Role $role)
+    public function edit(Request $role)
     {
-        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $permissions = Permission::all()->pluck('name', 'id');
 
@@ -61,7 +60,7 @@ class ContactController extends Controller
         return view('admin.roles.edit', compact('permissions', 'role'));
     }
 
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request, Role $role)
     {
         $role->update(['name' => $request->name]);
         $role->permissions()->sync($request->input('permissions', []));
@@ -70,19 +69,19 @@ class ContactController extends Controller
         return redirect()->route('admin.roles.index');
     }
 
-    public function show(Role $role)
+    public function show(Request $role)
     {
-        abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        /* abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+ */
         $role->load('permissions');
 
         return view('admin.roles.show', compact('role'));
     }
 
-    public function destroy(Role $role)
+    public function destroy(Request $role)
     {
-        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+/*         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+ */
         $role->delete();
         flash()->addSuccess('Role deleted successfully.');
         return back();

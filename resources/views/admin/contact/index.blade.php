@@ -4,11 +4,11 @@
     <div class="card">
         <div class="card-header">
             Contact List
-            <!-- @can('role_create') -->
-                <a class="btn btn-success btn-sm text-white float-end" href="{{ route("admin.roles.create") }}">
+
+                <a class="btn btn-success btn-sm text-white float-end" href="{{ route("admin.contact.create") }}">
                     Add New
                 </a>
-            <!-- @endcan -->
+
         </div>
 
         <div class="card-body">
@@ -32,7 +32,7 @@
                            Company name
                         </th>
                         <th>
-                            Company Registration Number 
+                            Company Registration Number
                         </th>
                         <th>
                             Action
@@ -62,18 +62,18 @@
                             <td>
                                 {{ $role->company_registration_number ?? '' }}
                             </td>
-                        
+
                             <td>
-                    
-                                    <a class="btn btn-xs btn-primary mb-1" href="{{ route('admin.roles.show', $role->id) }}">
+
+                                    <a class="btn btn-sm btn-primary mb-1" href="{{ route('admin.roles.show', $role->id) }}">
                                         View
                                     </a>
-       
+
 
                                     <a class="badge bg-info" href="{{ route('admin.roles.edit', $role->id) }}">
                                         Edit
                                     </a>
-      
+
                                     <a href="javascript:void(0)" class="badge bg-danger text-white" onclick="
                                         if(confirm('Are you sure, You want to Delete this ??'))
                                         {
@@ -86,7 +86,7 @@
                                         {{csrf_field()}}
                                         {{ method_field('DELETE') }}
                                     </form>
-             
+
 
                             </td>
 

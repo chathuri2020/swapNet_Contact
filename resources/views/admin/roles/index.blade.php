@@ -4,11 +4,11 @@
     <div class="card">
         <div class="card-header">
             Role List
-            @can('role_create')
+           {{--  @can('role_create') --}}
                 <a class="btn btn-success btn-sm text-white float-end" href="{{ route("admin.roles.create") }}">
                     Add New
                 </a>
-            @endcan
+         {{--    @endcan --}}
         </div>
 
         <div class="card-body">

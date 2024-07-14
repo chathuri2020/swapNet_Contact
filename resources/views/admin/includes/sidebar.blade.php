@@ -17,7 +17,7 @@
                         Dashboard
                     </a>
                 </li>
-                @can('user_access')
+               
                     <li class="nav-item">
                         <a class="nav-link {{ (request()->is('admin/users*')) ? 'active' : '' }}"
                            href="{{ route('admin.users.index') }}">
@@ -25,8 +25,7 @@
                             Users
                         </a>
                     </li>
-                @endcan
-                @can('permission_access')
+          
                     <li class="nav-item">
                         <a class="nav-link {{ (request()->is('admin/permissions*')) ? 'active' : '' }}"
                            href="{{ route('admin.permissions.index') }}">
@@ -34,8 +33,8 @@
                             Permissions
                         </a>
                     </li>
-                @endcan
-                @can('role_access')
+      
+              
                     <li class="nav-item">
                         <a class="nav-link {{ (request()->is('admin/roles*')) ? 'active' : '' }}"
                            href="{{ route('admin.roles.index') }}">
@@ -43,7 +42,7 @@
                             Roles
                         </a>
                     </li>
-                @endcan
+           
                 @can('post_access')
                     <li class="nav-item">
                         <a class="nav-link {{ (request()->is('admin/posts*')) ? 'active' : '' }}"
@@ -81,8 +80,8 @@
             </h6>
             <ul class="nav flex-column mb-2">
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('admin/contact-create*')) ? 'active' : '' }}"
-                    href="{{ route('admin.contact.create') }}">
+                <a class="nav-link {{ (request()->is('admin/contact*')) ? 'active' : '' }}"
+                    href="{{ route('admin.contact.index') }}">
                         <span data-feather="briefcase" class="align-text-bottom"></span>
                        Contacts
                     </a>
@@ -90,7 +89,7 @@
                 </li>
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('admin/category*')) ? 'active' : '' }}"
-                    href="{{ route('admin.category.edit') }}">
+                    href="{{ route('admin.category.index') }}">
                         <span data-feather="list" class="align-text-bottom"></span>
                         Categories
                     </a>

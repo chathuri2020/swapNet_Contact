@@ -21,6 +21,6 @@ class SubcategoryLevelOne extends Model
 
     public function subcategoriesLevelTwo()
     {
-        return $this->hasMany(SubcategoryLevelTwo::class);
+        return $this->hasMany(SubcategoryLevelTwo::class, 'category_l_one_id');
     }
 }

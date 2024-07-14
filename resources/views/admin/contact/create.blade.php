@@ -79,12 +79,39 @@
                                 value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || isset($role) && $role->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                         @endforeach
                     </select>
-                    @error('permissions'))
+                    @error('permissions')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
+
+           {{--      <div class="mb-3">
+                    <label for="category">Category*</label>
+                    <select name="category" id="category" class="form-control">
+                        <option value="">Select Category</option>
+                        @foreach($category as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="subcategory-level-one">Subcategory Level 1*</label>
+                    <select name="subcategory_level_one" id="subcategory-level-one" class="form-control" disabled>
+                        <option value="">Select Subcategory Level 1</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="subcategory-level-two">Subcategory Level 2*</label>
+                    <select name="subcategory_level_two" id="subcategory-level-two" class="form-control" disabled>
+                        <option value="">Select Subcategory Level 2</option>
+                    </select>
+                </div>
+ --}}
+
+
             </div>
             <div class="card-footer">
                 <button class="btn btn-primary me-2" type="submit">Save</button>

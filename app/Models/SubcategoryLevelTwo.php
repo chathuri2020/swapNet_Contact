@@ -14,10 +14,10 @@ class SubcategoryLevelTwo extends Model
         'category_l_one_id',
     ];
 
-    public function subcategoryLevelOne()
+/*     public function subcategoryLevelOne()
     {
         return $this->belongsTo(SubcategoryLevelOne::class, 'category_l_one_id');
-    }
+    } */
 
     public function contacts()
     {

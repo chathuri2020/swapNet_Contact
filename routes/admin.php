@@ -17,11 +17,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
 
     // category
-    Route::get('category', [CategoryController::class, 'index'])->name('category.edit');
+    Route::get('category', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('category-create', [CategoryController::class, 'create'])->name('category.edit');
     Route::put('category-update', [CategoryController::class, 'update'])->name('category.update');
-/*  Route::put('profile-update', [CategoryController::class, 'update'])->name('profile.update');
-    Route::get('change-password', [CategoryController::class, 'password'])->name('password.index');
-    Route::put('update-password', [CategoryController::class, 'updatePassword'])->name('password.update'); */
+    Route::delete('category-destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
 
 
 

@@ -59,6 +59,11 @@ Breadcrumbs::for('admin.password.index', function (BreadcrumbTrail $trail): void
 
 
 // category
+Breadcrumbs::for('admin.category.index', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.index');
+    $trail->push('Category', route('admin.category.index'));
+});
+
 Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail): void {
     $trail->parent('admin.index');
     $trail->push('Category', route('admin.category.edit'));

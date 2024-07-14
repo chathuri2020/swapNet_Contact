@@ -16,11 +16,19 @@ class CategoryController extends Controller
 {
     public function index()
     {
+        $category = Category::with('subcategoriesLevelOne.subcategoriesLevelTwo')->paginate(15);
+        //$subcategory = SubcategoryLevelOne::paginate(15);
+        return view('admin.category.index', compact('category'));
+    }
+
+    public function create()
+    {
+        /* abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+ */
         $profile = Auth::user();
         return view('admin.category.edit', compact('profile'));
     }
 
-    
     public function update(Request $request)
     {
      /*    echo 'hi';
@@ -36,8 +44,8 @@ class CategoryController extends Controller
         $category = new Category();
 
         $category->name = $request->category;
-      
-    
+
+
         if ($category->save()) {
 
             if ($request->has('subcategories')) {
@@ -63,7 +71,7 @@ class CategoryController extends Controller
 
 
             flash()->addSuccess('Category created successfully.');
-            return redirect()->route('admin.category.edit');
+            return redirect()->route('admin.category.index');
         }
         flash()->addError('Category create fail!');
         return redirect()->route('admin.category.edit');
@@ -81,31 +89,18 @@ class CategoryController extends Controller
         return redirect()->back()->with('error', 'Profile update fail!'); */
     }
 
-        /* 
 
-    public function password()
+    public function destroy($id)
     {
-        return view('admin.profile.change-password');
+        $category = Category::findOrFail($id);
+
+        if ($category->delete()) {
+            flash()->addSuccess('Category deleted successfully.');
+            return redirect()->route('admin.category.index');
+        } else {
+            flash()->addError('Category deletion failed.');
+            return redirect()->route('admin.category.index');
+        }
     }
 
-    public function updatePassword(ChangePasswordRequest $request)
-    {
-        #Match The Old Password
-        if (!Hash::check($request->old_password, auth()->user()->password)) {
-            return back()->with("error", "Old Password Doesn't match!");
-        }
-
-        #Update the new Password
-        $updated = User::whereId(auth()->user()->id)->update([
-            'password' => Hash::make($request->new_password)
-        ]);
-
-        if ($updated) {
-            flash()->addSuccess('Password changed successfully.');
-            return redirect()->back();
-        } else {
-            flash()->addError('Password change fail!.');
-            return redirect()->back();
-        }
-    } */
 }
