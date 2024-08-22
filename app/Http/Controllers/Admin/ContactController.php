@@ -34,7 +34,7 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
-
+//dd($request->toArray());
 //category_id
         //$role = Contact::create(['name' => $request->name]);
         //  $role->permissions()->sync($request->input('permissions', []));
@@ -47,7 +47,7 @@ class ContactController extends Controller
 
 
         if ($contact->save()) {
-            $contact->categories()->attach($request->category_id);
+            $contact->categories()->attach($request->category_ids);
             flash()->addSuccess('Contact successfully created.');
             return redirect()->route('admin.contact.index');
         }

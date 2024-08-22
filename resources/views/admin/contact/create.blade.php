@@ -72,90 +72,50 @@
                     @enderror
                 </div>
 
-                {{--  <div class="mb-3">
-                    <label for="permissions">Categories*
-                        <span class="btn btn-info btn-sm select-all">Select All</span>
-                        <span class="btn btn-info btn-sm deselect-all">Deselect All</span></label>
-                    <select name="permissions[]" id="permissions"
-                            class="form-control select2 @error('permissions') is-invalid @enderror" multiple="multiple"
-                            required>
-                            @foreach ($category as $category)
-                            @foreach ($category->subcategoriesLevelOne as $indexL1 => $subcategoryL1)
-
-                                    @if ($indexL1 === 0)
-                                        <td rowspan="{{ $category->subcategoriesLevelOne->count() }}" style="vertical-align: middle;">{{ $category->category_name }}</td>
-                                    @endif
-
-                                        <option value="1">{{ $subcategoryL1->category_name }}</option>
-                            @endforeach
-                        @endforeach
-                    </select>
-                    @error('permissions')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
---}}
+                <button type="button" class="mb-2 btn btn-sm" style="background-color:#202c46 ; color:rgb(255, 255, 255)" id="add-category">Add Category</button>
 
 
+                <div id="category-container" style="background-color:rgb(240, 240, 240); padding:1%">
+                    <!-- Initial category selection block -->
+                    <div class="category-group">
+                        <!-- Hidden input to store selected category ID -->
+                        <input type="hidden" name="category_ids[]" class="category_ids" value="">
+                        <div class="d-flex gap-3 mb-3">
+                            <div class="mb-3 col-3">
+                                <label for="parent_category" class="form-label">Parent Category:</label>
+                                <select class="form-select parent_category" name="parent_category[]">
+                                    <option value="">Select Parent Category</option>
+                                    @foreach ($categories as $category)
+                                        @if ($category->category_type == 'parent')
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div style="display: none;" class="mb-3 col-3 sub1_container">
+                                <label for="sub1_category" class="form-label">Subcategory Level 1:</label>
+                                <select class="form-select sub1_category" name="sub1_category[]">
+                                    <option value="">Select Subcategory Level 1</option>
+                                </select>
+                            </div>
 
-                {{--      <div class="mb-3">
-                    <label for="category">Category*</label>
-                    <select name="category" id="category" class="form-control">
-                        <option value="">Select Category</option>
-                        @foreach ($category as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                            <div style="display: none;" class="mb-3 col-3 sub2_container">
+                                <label for="sub2_category" class="form-label">Subcategory Level 2:</label>
+                                <select class="form-select sub2_category" name="sub2_category[]">
+                                    <option value="">Select Subcategory Level 2</option>
+                                </select>
+                            </div>
 
-                <div class="mb-3">
-                    <label for="subcategory-level-one">Subcategory Level 1*</label>
-                    <select name="subcategory_level_one" id="subcategory-level-one" class="form-control" disabled>
-                        <option value="">Select Subcategory Level 1</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="subcategory-level-two">Subcategory Level 2*</label>
-                    <select name="subcategory_level_two" id="subcategory-level-two" class="form-control" disabled>
-                        <option value="">Select Subcategory Level 2</option>
-                    </select>
-                </div>
- --}}
-
-                <div class="d-flex gap-3 mb-3">
-                    <input type="hidden" name="category_id" id="selected_category_id" value="">
-                    <div class="mb-3 col-3">
-                        <label for="parent_category" class="form-label">Parent Category:</label>
-                        <select id="parent_category" name="parent_category" class="form-select ">
-                            <option value="">Select Parent Category</option>
-                            @foreach ($categories as $category)
-                                @if ($category->category_type == 'parent')
-                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Subcategory Level 1 Selection -->
-                    <div id="sub1_container" style="display: none;" class="mb-3 col-3">
-                        <label for="sub1_category" class="form-label">Subcategory Level 1:</label>
-                        <select id="sub1_category" name="sub1_category" class="form-select">
-                            <option value="">Select Subcategory Level 1</option>
-                        </select>
-                    </div>
-
-                    <!-- Subcategory Level 2 Selection -->
-                    <div id="sub2_container" style="display: none;" class="mb-3 col-3">
-                        <label for="sub2_category" class="form-label">Subcategory Level 2:</label>
-                        <select id="sub2_category" name="sub2_category" class="form-select">
-                            <option value="">Select Subcategory Level 2</option>
-                        </select>
+                            <div class="mt-3 col-3 d-flex align-items-center">
+                                <button type="button" class="btn btn-danger btn-sm remove-category-button">Remove</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+
 
             </div>
             <div class="card-footer">
@@ -175,73 +135,95 @@
 
     <script>
        $(document).ready(function() {
-    const categories = @json($categories);
+        const categories = @json($categories);
 
-    // Hidden input to store the selected last level category ID
-    let selectedCategoryId = '';
+        function setupCategorySelection(categoryGroup) {
+            const categoryIdsInput = categoryGroup.find('.category_ids');
 
-    $('#parent_category').change(function() {
-        const parentId = $(this).val();
-        $('#sub1_category').empty().append('<option value="">Select Subcategory Level 1</option>');
-        $('#sub2_category').empty().append('<option value="">Select Subcategory Level 2</option>');
-        $('#selected_category_id').val(parentId); // Always store the parent ID initially
+            categoryGroup.find('.parent_category').change(function() {
+                const parentId = $(this).val();
+                const sub1Container = categoryGroup.find('.sub1_container');
+                const sub2Container = categoryGroup.find('.sub2_container');
+                const sub1Select = categoryGroup.find('.sub1_category');
+                const sub2Select = categoryGroup.find('.sub2_category');
 
-        if (parentId) {
-            const selectedCategory = categories.find(cat => cat.id == parentId);
-            const subcategoriesLevelOne = selectedCategory ? selectedCategory.subcategories_level_one : [];
+                sub1Select.empty().append('<option value="">Select Subcategory Level 1</option>');
+                sub2Select.empty().append('<option value="">Select Subcategory Level 2</option>');
 
-            if (subcategoriesLevelOne.length > 0) {
-                $('#sub1_container').show();
-                subcategoriesLevelOne.forEach(subcategoryL1 => {
-                    $('#sub1_category').append('<option value="' + subcategoryL1.id + '">' + subcategoryL1.category_name + '</option>');
-                });
-            } else {
-                $('#sub1_container').hide();
-            }
+                if (parentId) {
+                    const selectedCategory = categories.find(cat => cat.id == parentId);
+                    const subcategoriesLevelOne = selectedCategory ? selectedCategory.subcategories_level_one : [];
 
-            $('#sub2_container').hide();
-        } else {
-            $('#sub1_container').hide();
-            $('#sub2_container').hide();
+                    if (subcategoriesLevelOne.length > 0) {
+                        sub1Container.show();
+                        subcategoriesLevelOne.forEach(subcategoryL1 => {
+                            sub1Select.append('<option value="' + subcategoryL1.id + '">' + subcategoryL1.category_name + '</option>');
+                        });
+                    } else {
+                        sub1Container.hide();
+                    }
+
+                    sub2Container.hide();
+                    categoryIdsInput.val(parentId); // Store the selected parent ID
+                } else {
+                    sub1Container.hide();
+                    sub2Container.hide();
+                    categoryIdsInput.val(''); // Clear the ID if no parent is selected
+                }
+            });
+
+            categoryGroup.find('.sub1_category').change(function() {
+                const sub1Id = $(this).val();
+                const sub2Container = categoryGroup.find('.sub2_container');
+                const sub2Select = categoryGroup.find('.sub2_category');
+
+                sub2Select.empty().append('<option value="">Select Subcategory Level 2</option>');
+
+                if (sub1Id) {
+                    const subcategoryLevelOne = categories
+                        .flatMap(cat => cat.subcategories_level_one)
+                        .find(sub => sub.id == sub1Id);
+
+                    const subcategoriesLevelTwo = subcategoryLevelOne ? subcategoryLevelOne.subcategories_level_two : [];
+
+                    if (subcategoriesLevelTwo.length > 0) {
+                        sub2Container.show();
+                        subcategoriesLevelTwo.forEach(subcategoryL2 => {
+                            sub2Select.append('<option value="' + subcategoryL2.id + '">' + subcategoryL2.category_name + '</option>');
+                        });
+                    } else {
+                        sub2Container.hide();
+                    }
+
+                    categoryIdsInput.val(sub1Id); // Store the selected subcategory level 1 ID
+                } else {
+                    sub2Container.hide();
+                    categoryIdsInput.val(categoryGroup.find('.parent_category').val()); // Fallback to parent ID
+                }
+            });
+
+            categoryGroup.find('.sub2_category').change(function() {
+                const sub2Id = $(this).val();
+                categoryIdsInput.val(sub2Id); // Store the selected subcategory level 2 ID
+            });
+
+            categoryGroup.find('.remove-category-button').click(function() {
+                categoryGroup.remove();
+            });
         }
+
+        $('#add-category').click(function() {
+            const newCategoryGroup = $('.category-group:first').clone();
+            newCategoryGroup.find('select').val(''); // Reset the selects
+            newCategoryGroup.find('.sub1_container').hide();
+            newCategoryGroup.find('.sub2_container').hide();
+            newCategoryGroup.find('.category_ids').val(''); // Clear the hidden input
+            $('#category-container').append(newCategoryGroup);
+            setupCategorySelection(newCategoryGroup);
+        });
+
+        setupCategorySelection($('.category-group:first')); // Initialize for the first category group
     });
-
-    $('#sub1_category').change(function() {
-        const sub1Id = $(this).val();
-        $('#sub2_category').empty().append('<option value="">Select Subcategory Level 2</option>');
-        $('#selected_category_id').val(sub1Id); // Store Level 1 ID if selected
-
-        if (sub1Id) {
-            const subcategoryLevelOne = categories
-                .flatMap(cat => cat.subcategories_level_one)
-                .find(sub => sub.id == sub1Id);
-
-            const subcategoriesLevelTwo = subcategoryLevelOne ? subcategoryLevelOne.subcategories_level_two : [];
-
-            if (subcategoriesLevelTwo.length > 0) {
-                $('#sub2_container').show();
-                subcategoriesLevelTwo.forEach(subcategoryL2 => {
-                    $('#sub2_category').append('<option value="' + subcategoryL2.id + '">' + subcategoryL2.category_name + '</option>');
-                });
-            } else {
-                $('#sub2_container').hide();
-            }
-        } else {
-            $('#sub2_container').hide();
-            $('#selected_category_id').val($('#parent_category').val()); // Fallback to parent ID
-        }
-    });
-
-    $('#sub2_category').change(function() {
-        const sub2Id = $(this).val();
-        $('#selected_category_id').val(sub2Id); // Store Level 2 ID if selected
-    });
-});
-
-
-
-
-
         $(document).ready(function() {
             $('.select-all').click(function() {
                 let $select2 = $(this).parent().siblings('.select2')
