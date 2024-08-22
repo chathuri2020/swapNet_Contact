@@ -25,13 +25,17 @@ class ContactController extends Controller
     {
         /* abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
  */
-        $permissions = Category::with('subcategoriesLevelOne.subcategoriesLevelTwo')->pluck('name', 'id');
-        $category = Category::with('subcategoriesLevelOne.subcategoriesLevelTwo')->pluck('name', 'id');
-        return view('admin.contact.create', compact('permissions', 'category'));
+
+        $permissions = Category::with(['subcategoriesLevelOne.subcategoriesLevelTwo'])->where('category_type', 'parent')->get();
+        $categories = Category::with(['subcategoriesLevelOne.subcategoriesLevelTwo'])->where('category_type', 'parent')->get();
+        //dd($categories->toArray());
+        return view('admin.contact.create', compact('permissions', 'categories'));
     }
 
     public function store(Request $request)
     {
+
+//category_id
         //$role = Contact::create(['name' => $request->name]);
         //  $role->permissions()->sync($request->input('permissions', []));
         $contact = new Contact();
@@ -41,7 +45,9 @@ class ContactController extends Controller
         $contact->company_name = $request->company_name;
         $contact->company_registration_number  = $request->company_registration_number;
 
+
         if ($contact->save()) {
+            $contact->categories()->attach($request->category_id);
             flash()->addSuccess('Contact successfully created.');
             return redirect()->route('admin.contact.index');
         }
@@ -52,11 +58,8 @@ class ContactController extends Controller
 
     public function edit(Request $role)
     {
-
         $permissions = Permission::all()->pluck('name', 'id');
-
         $role->load('permissions');
-
         return view('admin.roles.edit', compact('permissions', 'role'));
     }
 

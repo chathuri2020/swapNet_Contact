@@ -18,8 +18,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // category
     Route::get('category', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('category-create', [CategoryController::class, 'create'])->name('category.edit');
-    Route::put('category-update', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('category-create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('category-store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('category/{contact}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('category/{contact}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('category-destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 
@@ -32,7 +34,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
   /*  Route::put('profile-update', [CategoryController::class, 'update'])->name('profile.update');
       Route::get('change-password', [CategoryController::class, 'password'])->name('password.index');
       Route::put('update-password', [CategoryController::class, 'updatePassword'])->name('password.update'); */
-  
+
 
     // profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -2,6 +2,7 @@
 
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Flasher\Laravel\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -64,10 +65,18 @@ Breadcrumbs::for('admin.category.index', function (BreadcrumbTrail $trail): void
     $trail->push('Category', route('admin.category.index'));
 });
 
-Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail): void {
+Breadcrumbs::for('admin.category.create', function (BreadcrumbTrail $trail): void {
     $trail->parent('admin.index');
-    $trail->push('Category', route('admin.category.edit'));
+    $trail->push('Category', route('admin.category.create'));
 });
+
+
+Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail, $categoryId): void {
+    $trail->parent('admin.category.index'); // Assuming 'admin.category.index' exists for listing categories
+    $trail->push('Edit Category', route('admin.category.edit', $categoryId)); // Adjust the route name and label as needed
+});
+
+
 
 // contact
 Breadcrumbs::for('admin.contact.index', function (BreadcrumbTrail $trail): void {
