@@ -16,8 +16,8 @@ class ContactController extends Controller
     {
         /*  abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 */
-        $roles = Contact::paginate(15);
-
+        $roles = Contact::with('categories')->paginate(15);
+//dd($roles);
         return view('admin.contact.index', compact('roles'));
     }
 
