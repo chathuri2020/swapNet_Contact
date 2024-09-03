@@ -22,7 +22,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::post('category-store', [CategoryController::class, 'store'])->name('category.store');
     Route::get('category/{contact}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('category/{contact}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('category-destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    Route::delete('category-destroy/{contact}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 
 
@@ -31,9 +31,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
       Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
       Route::get('contact-create', [ContactController::class, 'create'])->name('contact.create');
       Route::post('contact-store', [ContactController::class, 'store'])->name('contact.store');
-  /*  Route::put('profile-update', [CategoryController::class, 'update'])->name('profile.update');
-      Route::get('change-password', [CategoryController::class, 'password'])->name('password.index');
-      Route::put('update-password', [CategoryController::class, 'updatePassword'])->name('password.update'); */
+      Route::get('contact/{contact}', [ContactController::class, 'edit'])->name('contact.edit');
+      Route::put('contact/{contact}', [ContactController::class, 'update'])->name('contact.update');
+      Route::delete('contact-destroy/{contact}', [ContactController::class, 'destroy'])->name('contact.destroy');
 
 
     // profile

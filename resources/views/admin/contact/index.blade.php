@@ -39,7 +39,9 @@
                                             @if ($category->category_type == 'sub2')
                                                 @php
                                                     $sublevel1 = \App\Models\Category::find($category->reference_id);
-                                                    $sublevel1Parent = $sublevel1 ? \App\Models\Category::find($sublevel1->reference_id) : null;
+                                                    $sublevel1Parent = $sublevel1
+                                                        ? \App\Models\Category::find($sublevel1->reference_id)
+                                                        : null;
                                                 @endphp
                                                 <!-- Level 2 category -->
                                                 @if ($sublevel1)
@@ -91,7 +93,9 @@
                                                 @endif
                                             @elseif($category->category_type == 'sub1')
                                                 @php
-                                                    $parentCategory = \App\Models\Category::find($category->reference_id);
+                                                    $parentCategory = \App\Models\Category::find(
+                                                        $category->reference_id,
+                                                    );
                                                 @endphp
                                                 <!-- Level 1 category -->
                                                 @if ($parentCategory)
@@ -141,18 +145,26 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary mb-1" href="{{ route('admin.roles.show', $role->id) }}">View</a>
-                                    <a class="btn btn-sm btn-info mb-1" href="{{ route('admin.roles.edit', $role->id) }}">Edit</a>
-                                    <a class="btn btn-sm btn-danger text-white" href="javascript:void(0)" onclick="
-                                        if(confirm('Are you sure, You want to Delete this ??')) {
-                                            event.preventDefault();
-                                            document.getElementById('delete-form-{{ $role->id }}').submit();
-                                        }">Delete
+                                    <a class="btn btn-sm btn-info mb-1"
+                                        href="{{ route('admin.contact.edit', $role->id) }}">Edit</a>
+
+                                    <a class="btn btn-sm btn-danger text-white" href="javascript:void(0)"
+                                        onclick="
+                                    if(confirm('Are you sure you want to delete this?')) {
+                                        event.preventDefault();
+                                        document.getElementById('delete-form-{{ $role->id }}').submit();
+                                    }
+                                ">Delete
                                     </a>
-                                    <form id="delete-form-{{ $role->id }}" method="post" action="{{ route('admin.roles.destroy', $role->id) }}" style="display: none">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
+
+                                    <!-- Hidden Delete Form -->
+                                    <form id="delete-form-{{ $role->id }}"
+                                        action="{{ route('admin.contact.destroy', $role->id) }}" method="POST"
+                                        style="display:none;">
+                                        @csrf
+                                        @method('DELETE')
                                     </form>
+
                                 </td>
                             </tr>
                         @endforeach

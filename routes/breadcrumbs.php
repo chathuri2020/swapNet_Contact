@@ -87,3 +87,9 @@ Breadcrumbs::for('admin.contact.create', function (BreadcrumbTrail $trail): void
     $trail->parent('admin.contact.index');
     $trail->push('Add new Contact', route('admin.contact.create'));
 });
+
+Breadcrumbs::for('admin.contact.edit', function (BreadcrumbTrail $trail, $contact): void {
+    $trail->parent('admin.contact.index'); // Assuming 'admin.category.index' exists for listing categories
+    $trail->push('Edit Contact', route('admin.contact.edit', $contact)); // Adjust the route name and label as needed
+});
+
