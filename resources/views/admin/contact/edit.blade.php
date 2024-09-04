@@ -141,15 +141,6 @@
                 </div>
 
 
-
-
-
-
-
-
-
-
-
             </div>
             <div class="card-footer">
                 <button class="btn btn-primary me-2" type="submit">Save</button>
@@ -163,11 +154,12 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            const categories = @json($categories);
+            const categories = @json($categoriesDyn);
 
             function setupCategorySelection(categoryGroup) {
                 const categoryIdsInput = categoryGroup.find('.category_ids');
@@ -179,6 +171,7 @@
                     const sub1Select = categoryGroup.find('.sub1_category');
                     const sub2Select = categoryGroup.find('.sub2_category');
 
+                    // Reset subcategory level 1 and level 2 selections
                     sub1Select.empty().append('<option value="">Select Subcategory Level 1</option>');
                     sub2Select.empty().append('<option value="">Select Subcategory Level 2</option>');
 
@@ -211,6 +204,7 @@
                     const sub2Container = categoryGroup.find('.sub2_container');
                     const sub2Select = categoryGroup.find('.sub2_category');
 
+                    // Reset subcategory level 2 selection
                     sub2Select.empty().append('<option value="">Select Subcategory Level 2</option>');
 
                     if (sub1Id) {

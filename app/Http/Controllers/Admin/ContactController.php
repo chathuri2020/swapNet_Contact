@@ -63,7 +63,7 @@ class ContactController extends Controller
 
         // Fetch all categories
         $categories = Category::all()->keyBy('id');
-
+        $categoriesDyn = Category::with(['subcategoriesLevelOne.subcategoriesLevelTwo'])->where('category_type', 'parent')->get();
         // Initialize arrays to store dropdown data
         $parentCategories = Category::where('category_type', 'parent')->get();
         $sub1Categories = Category::where('category_type', 'sub1')->get();
@@ -96,7 +96,7 @@ class ContactController extends Controller
             }
         }
 
-        return view('admin.contact.edit', compact('contact', 'categories', 'parentCategories', 'sub1Categories', 'sub2Categories', 'selectedCategories'));
+        return view('admin.contact.edit', compact('contact', 'categories', 'parentCategories', 'sub1Categories', 'sub2Categories', 'selectedCategories', 'categoriesDyn'));
     }
 
 
@@ -108,10 +108,11 @@ class ContactController extends Controller
 
     public function update(Request $request, Contact $contact)
     {
+//dd($request->category_ids);
         $contact->update($request->only(['name', 'address', 'email', 'company_name', 'company_registration_number']));
 
         // Update the categories
-        // $contact->categories()->sync($request->category_ids);
+         $contact->categories()->sync($request->category_ids);
 
         flash()->addSuccess('Contact updated successfully.');
         return redirect()->route('admin.contact.index');
