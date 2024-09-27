@@ -14,12 +14,37 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categories'; // Specify the table name
+
+
     protected $fillable = [
-        'name',
+        'category_name',
+        'category_type',
+        'slug',
+        'reference_id',
     ];
+
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class, 'category_contact', 'category_id', 'contact_id');
+    }
 
     public function subcategoriesLevelOne()
     {
-        return $this->hasMany(SubcategoryLevelOne::class, 'category_id');
+        return $this->hasMany(Category::class, 'reference_id')->where('category_type', 'sub1');
     }
+
+    public function subcategoriesLevelTwo()
+    {
+        return $this->hasMany(Category::class, 'reference_id')->where('category_type', 'sub2');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'reference_id');
+    }
+
+   /*  public function subcategoriesLevelOne()
+    {
+        return $this->hasMany(SubcategoryLevelOne::class, 'category_id');
+    } */
 }

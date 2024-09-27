@@ -2,6 +2,7 @@
 
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Flasher\Laravel\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -59,7 +60,36 @@ Breadcrumbs::for('admin.password.index', function (BreadcrumbTrail $trail): void
 
 
 // category
-Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail): void {
+Breadcrumbs::for('admin.category.index', function (BreadcrumbTrail $trail): void {
     $trail->parent('admin.index');
-    $trail->push('Category', route('admin.category.edit'));
+    $trail->push('Category', route('admin.category.index'));
 });
+
+Breadcrumbs::for('admin.category.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.index');
+    $trail->push('Category', route('admin.category.create'));
+});
+
+
+Breadcrumbs::for('admin.category.edit', function (BreadcrumbTrail $trail, $categoryId): void {
+    $trail->parent('admin.category.index'); // Assuming 'admin.category.index' exists for listing categories
+    $trail->push('Edit Category', route('admin.category.edit', $categoryId)); // Adjust the route name and label as needed
+});
+
+
+
+// contact
+Breadcrumbs::for('admin.contact.index', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.index');
+    $trail->push('Contact', route('admin.contact.index'));
+});
+Breadcrumbs::for('admin.contact.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('admin.contact.index');
+    $trail->push('Add new Contact', route('admin.contact.create'));
+});
+
+Breadcrumbs::for('admin.contact.edit', function (BreadcrumbTrail $trail, $contact): void {
+    $trail->parent('admin.contact.index'); // Assuming 'admin.category.index' exists for listing categories
+    $trail->push('Edit Contact', route('admin.contact.edit', $contact)); // Adjust the route name and label as needed
+});
+

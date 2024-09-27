@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_categories_l_two', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('category_l_one_id')->nullable();
+            $table->string('address');
+            $table->string('email')->unique();
+            $table->string('company_name');
+            $table->string('company_registration_number')->unique();
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_categories_l_two');
+        Schema::dropIfExists('contacts');
     }
 };

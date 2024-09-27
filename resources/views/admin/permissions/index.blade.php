@@ -5,13 +5,13 @@
             <div class="float-start">
                 Permission List
             </div>
-            @can('permission_create')
+            {{-- @can('permission_create') --}}
                 <div class="float-end">
                     <a class="btn btn-success btn-sm text-white" href="{{ route("admin.permissions.create") }}">
                         Add Permission
                     </a>
                 </div>
-            @endcan
+                {{--   @endcan --}}
         </div>
 
         <div class="card-body">
@@ -44,14 +44,14 @@
                                 {{ $permission->name ?? '' }}
                             </td>
                             <td>
-                                @can('permission_edit')
+                                {{-- @can('permission_edit') --}}
                                     <a class="badge bg-info"
                                        href="{{ route('admin.permissions.edit', $permission->id) }}">
                                         Edit
                                     </a>
-                                @endcan
+                        {{--         @endcan --}}
 
-                                @can('permission_delete')
+                               {{--  @can('permission_delete') --}}
                                     <form id="delete-form-{{ $permission->id }}" method="post"
                                           action="{{ route('admin.permissions.destroy', $permission->id) }}"
                                           style="display: none">
@@ -65,7 +65,7 @@
                                         document.getElementById('delete-form-{{ $permission->id }}').submit();
                                         }">Delete
                                     </a>
-                                @endcan
+                          {{--       @endcan --}}
 
                             </td>
 

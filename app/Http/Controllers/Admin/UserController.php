@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;#
+use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller
 {
@@ -29,8 +31,11 @@ class UserController extends Controller
      */
     public function create()
     {
+
+
+        $roles = Role::all(); // Retrieve all roles to display in the form
         abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('admin.users.create');
+        return view('admin.users.create', compact('roles'));
 
     }
 
@@ -54,6 +59,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = $request->password;
+        $user->assignRole('seller');
 
         if ($user->save()) {
             flash()->addSuccess('User created successfully.');

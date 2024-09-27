@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -29,7 +28,10 @@ class PermissionsTableSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            // Check if the permission already exists
+            if (!Permission::where('name', $permission)->exists()) {
+                Permission::create(['name' => $permission, 'guard_name' => 'web']);
+            }
         }
     }
 }
