@@ -8,18 +8,31 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\Contact;
 use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
     //
     public function index()
     {
-        /*  abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-*/
-        $roles = Contact::with('categories')->paginate(15);
-        //dd($roles);
-        return view('admin.contact.index', compact('roles'));
+        $user = Auth::user();
+        //dd($user);
+        $userId = $user->id;
+        $isAdmin = $user->hasRole('Admin');
+
+        if ($isAdmin) {
+          //  dd("he is an admin");
+              $contacts = Contact::with('user')->get(); // Eager load the user relationship
+        } else {
+           // dd("he is not an admin");
+            $contacts = Contact::with('user')->where('user_id', $userId)->get();
+        }
+
+        return view('admin.contact.index', compact('contacts'));
     }
+
+
 
     public function create()
     {
@@ -44,7 +57,7 @@ class ContactController extends Controller
         $contact->email  = $request->email;
         $contact->company_name = $request->company_name;
         $contact->company_registration_number  = $request->company_registration_number;
-
+        $contact->user_id = Auth::id(); // Set the authenticated user's ID
 
         if ($contact->save()) {
             $contact->categories()->attach($request->category_ids);
@@ -108,11 +121,11 @@ class ContactController extends Controller
 
     public function update(Request $request, Contact $contact)
     {
-//dd($request->category_ids);
+        //dd($request->category_ids);
         $contact->update($request->only(['name', 'address', 'email', 'company_name', 'company_registration_number']));
 
         // Update the categories
-         $contact->categories()->sync($request->category_ids);
+        $contact->categories()->sync($request->category_ids);
 
         flash()->addSuccess('Contact updated successfully.');
         return redirect()->route('admin.contact.index');

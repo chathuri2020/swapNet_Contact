@@ -8,7 +8,7 @@
                 <a class="btn btn-success btn-sm text-white float-end" href="{{ route("admin.roles.create") }}">
                     Add New
                 </a>
-         {{--    @endcan --}}
+         {{--     @can('contact_delete') --}}
         </div>
 
         <div class="card-body">

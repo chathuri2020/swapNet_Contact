@@ -23,5 +23,9 @@ class Contact extends Model
     {
         return $this->belongsToMany(Category::class, 'category_contact', 'contact_id', 'category_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -4,9 +4,11 @@
     <div class="card">
         <div class="card-header">
             Contact List
+            @can('contact_create')
             <a class="btn btn-success btn-sm text-white float-end" href="{{ route('admin.contact.create') }}">
                 Add New
             </a>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -21,11 +23,13 @@
                             <th>Company name</th>
                             <th>Registration Number</th>
                             <th>Category</th>
+                            @can('contact_edit')
                             <th>Action</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($roles as $key => $role)
+                        @foreach ($contacts as $key => $role)
                             <tr data-entry-id="{{ $role->id }}">
                                 <td>{{ $role->id ?? '' }}</td>
                                 <td>{{ $role->name ?? '' }}</td>
@@ -144,10 +148,14 @@
                                         <span class="text-muted">No Categories</span>
                                     @endif
                                 </td>
+                                @can('contact_edit')
                                 <td>
-                                    <a class="btn btn-sm btn-info mb-1"
-                                        href="{{ route('admin.contact.edit', $role->id) }}">Edit</a>
 
+                                        <a class="btn btn-sm btn-info mb-1"
+                                            href="{{ route('admin.contact.edit', $role->id) }}">Edit</a>
+                                    @endcan
+
+                                    @can('contact_delete')
                                     <a class="btn btn-sm btn-danger text-white" href="javascript:void(0)"
                                         onclick="
                                     if(confirm('Are you sure you want to delete this?')) {
@@ -164,6 +172,7 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
+                                    @endcan
 
                                 </td>
                             </tr>
@@ -172,8 +181,6 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer clearfix">
-            {{ $roles->links() }}
-        </div>
+
     </div>
 @endsection
