@@ -11,6 +11,22 @@
             @endcan
         </div>
 
+        <form action="{{ route('admin.contact.index') }}" method="GET" class="mb-4">
+            <div class="form-group mb-2">
+                <label for="category_id">Filter by Category:</label>
+                <select name="category_id" id="category_id" class="form-control">
+                    <option value="">Select a category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->category_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ route('admin.contact.index') }}" class="btn btn-secondary">Clear Filter</a>
+        </form>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered">

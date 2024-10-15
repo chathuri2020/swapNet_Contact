@@ -14,23 +14,42 @@ use Illuminate\Support\Facades\Auth;
 class ContactController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        //dd($user);
         $userId = $user->id;
         $isAdmin = $user->hasRole('Admin');
 
-        if ($isAdmin) {
-          //  dd("he is an admin");
-              $contacts = Contact::with('user')->get(); // Eager load the user relationship
-        } else {
-           // dd("he is not an admin");
-            $contacts = Contact::with('user')->where('user_id', $userId)->get();
+        // Get all parent categories for the filter dropdown
+        $categories = Category::where('category_type', 'parent')->get();
+
+        // Initialize the query
+        $query = Contact::with('categories');
+
+        // Check if a filter is applied
+        if ($request->has('category_id') && $request->category_id != '') {
+            $categoryId = $request->category_id;
+
+            // Apply the filter to include all subcategories
+            $query->where(function($q) use ($categoryId) {
+                $q->whereHas('categories', function($subQuery) use ($categoryId) {
+                    $subQuery->where('categories.id', $categoryId)
+                             ->orWhere('categories.reference_id', $categoryId); // Include subcategories
+                });
+            });
         }
 
-        return view('admin.contact.index', compact('contacts'));
+        // For admin, show all contacts; otherwise, show user's contacts
+        if ($isAdmin) {
+            $contacts = $query->get();
+        } else {
+            $contacts = $query->where('user_id', $userId)->get();
+        }
+
+        return view('admin.contact.index', compact('contacts', 'categories'));
     }
+
+
 
 
 
