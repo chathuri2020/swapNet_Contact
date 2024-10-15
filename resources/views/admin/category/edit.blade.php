@@ -1,31 +1,60 @@
 @extends('layouts.master')
 
-@section('title', 'Create Category')
+@section('title', 'Edit Category')
 
 @section('content')
 
 <div class="card">
     <div class="card-header">
-        Create Category
+        Edit Category
     </div>
 
     <div class="card-body">
-        <form action="{{ route('admin.category.update') }}" method="POST">
+        <form action="{{ route('admin.category.update', $category->id) }}" method="POST">
             @csrf
             @method('PUT')
+
             <div class="mb-3">
                 <label for="category">Main Category Name*</label>
-                <input type="text" id="category" name="category" class="form-control" required>
+                <input type="text" id="category" name="category" class="form-control" value="{{ $category->category_name }}" required>
             </div>
             <div class="mb-3">
                 <p>Subcategory Creation</p>
                 <button type="button" class="btn btn-primary btn-xs mb-5" data-bs-toggle="modal" data-bs-target="#addSubcategoryModal">Add Subcategory L1</button>
                 <ul id="subcategoryList" class="list-group">
-                    <!-- Subcategories will be dynamically inserted here -->
+                    @foreach($category->subcategoriesLevelOne as $indexL1 => $subcategoryL1)
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span>{{ $subcategoryL1->category_name }}</span>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-info btn-sm ml-2" data-bs-toggle="modal" data-bs-target="#addSubcategoryL2Modal" onclick="setParentSubcategoryIndex({{ $indexL1 }})">+ L2</button>
+                                    <button type="button" class="btn btn-danger btn-sm ml-2 close cls" aria-label="Close" onclick="removeElementMain(this)">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <ul class="list-group nested-list">
+                                    @foreach($subcategoryL1->subcategoriesLevelTwo as $subcategoryL2)
+                                        <li class="list-group-item">
+                                            {{ $subcategoryL2->category_name }}
+                                            <button class="btn-close ml-2 btn btn-sm" type="button" aria-label="Close" onclick="removeElement(this)">
+                                {{--   <span aria-hidden="true">&times;</span> --}}
+                                            </button>
+                                            <input type="hidden" name="subcategories[{{ $indexL1 }}][subcategoriesLevelTwo][]" value="{{ $subcategoryL2->category_name }}">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <input type="hidden" name="subcategories[{{ $indexL1 }}][name]" value="{{ $subcategoryL1->category_name }}">
+                        </li>
+                    @endforeach
                 </ul>
             </div>
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary me-2" type="submit">Create</button>
+                <button class="btn btn-primary me-2" type="submit">Update</button>
             </div>
         </form>
     </div>
@@ -164,3 +193,4 @@
     }
 </script>
 @endsection
+``

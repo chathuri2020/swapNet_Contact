@@ -4,10 +4,9 @@
         <div class="card-header">
             Category List
 
-            <a class="btn btn-success btn-sm text-white float-end" href="{{ route('admin.category.edit') }}">
+            <a class="btn btn-success btn-sm text-white float-end" href="{{ route('admin.category.create') }}">
                 Add New
             </a>
-
         </div>
 
         <div class="card-body">
@@ -15,22 +14,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                           {{--  <th>
-                                ID
-                            </th> --}}
-                            <th>
-                               Main Cateory
-                            </th>
-                            <th>
-                                Subcategory Level One
-                            </th>
-                            <th>
-                                Subcategory Level Two
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
+                            <th>Main Category</th>
+                            <th>Subcategory Level One</th>
+                            <th>Subcategory Level Two</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -39,21 +26,21 @@
                             @foreach ($category->subcategoriesLevelOne as $indexL1 => $subcategoryL1)
                                 <tr>
                                     @if ($indexL1 === 0)
-                                        <td rowspan="{{ $category->subcategoriesLevelOne->count() }}" style="vertical-align: middle;">{{ $category->name }}</td>
+                                        <td rowspan="{{ $category->subcategoriesLevelOne->count() }}" style="vertical-align: middle;">{{ $category->category_name }}</td>
                                     @endif
 
-                                    <td>{{ $subcategoryL1->name }}</td>
+                                    <td>{{ $subcategoryL1->category_name }}</td>
                                     <td style="border-right: 1px solid #dee2e6;">
                                         <ul>
                                             @foreach ($subcategoryL1->subcategoriesLevelTwo as $subcategoryL2)
-                                                <li>{{ $subcategoryL2->name }}</li>
+                                                <li>{{ $subcategoryL2->category_name }}</li>
                                             @endforeach
                                         </ul>
                                     </td>
 
                                     @if ($indexL1 === 0)
                                         <td rowspan="{{ $category->subcategoriesLevelOne->count() }}" style="vertical-align: middle;">
-                                            <a class="btn btn-sm btn-primary mb-1" href="{{ route('admin.roles.show', $category->id) }}">
+                                            <a class="btn btn-sm btn-primary mb-1" href="{{ route('admin.category.edit', $category->id) }}">
                                                 Edit
                                             </a>
 
@@ -76,13 +63,8 @@
                             @endforeach
                         @endforeach
                     </tbody>
-
-
                 </table>
             </div>
-        </div>
-        <div class="card-footer clearfix">
-
         </div>
     </div>
 @endsection

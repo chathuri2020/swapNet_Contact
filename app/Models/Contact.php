@@ -19,8 +19,13 @@ class Contact extends Model
         'company_registration_number',
     ];
 
-    public function subcategoryLevelTwo()
+    public function categories()
     {
-        return $this->belongsToMany(SubcategoryLevelTwo::class, 'category_contact');
+        return $this->belongsToMany(Category::class, 'category_contact', 'contact_id', 'category_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
