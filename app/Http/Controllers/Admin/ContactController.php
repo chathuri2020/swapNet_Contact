@@ -22,10 +22,10 @@ class ContactController extends Controller
         $isAdmin = $user->hasRole('Admin');
 
         if ($isAdmin) {
-          //  dd("he is an admin");
-              $contacts = Contact::with('user')->get(); // Eager load the user relationship
+            //  dd("he is an admin");
+            $contacts = Contact::with('user')->get(); // Eager load the user relationship
         } else {
-           // dd("he is not an admin");
+            // dd("he is not an admin");
             $contacts = Contact::with('user')->where('user_id', $userId)->get();
         }
 
@@ -45,7 +45,7 @@ class ContactController extends Controller
         return view('admin.contact.create', compact('permissions', 'categories'));
     }
 
-    public function store(Request $request)
+    /*  public function store(Request $request)
     {
         //dd($request->toArray());
         //category_id
@@ -67,7 +67,56 @@ class ContactController extends Controller
 
         flash()->addError('Whoops! Contact create failed!');
         return redirect()->back();
+    } */
+
+    public function store(Request $request)
+    {
+        // Validate request data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'company_name' => 'required|string|max:255',
+            'company_registration_number' => 'required|string|max:255',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'integer|exists:categories,id',
+        ]);
+
+        // Check if email already exists
+        if (Contact::where('email', $request->email)->exists()) {
+            flash()->addError('A contact with this email already exists.');
+            return redirect()->back()->withInput();
+        }
+
+        // Check if company registration number already exists
+        if (Contact::where('company_registration_number', $request->company_registration_number)->exists()) {
+            flash()->addError('A contact with this company registration number already exists.');
+            return redirect()->back()->withInput();
+        }
+
+        // If no duplicates, create the contact
+        $contact = new Contact();
+        $contact->name = $request->name;
+        $contact->address = $request->address;
+        $contact->email = $request->email;
+        $contact->company_name = $request->company_name;
+        $contact->company_registration_number = $request->company_registration_number;
+        $contact->user_id = Auth::id();
+
+        if ($contact->save()) {
+            if ($request->category_ids) {
+                $contact->categories()->attach($request->category_ids);
+            }
+
+            flash()->addSuccess('Contact successfully created.');
+            return redirect()->route('admin.contact.index');
+        }
+
+        flash()->addError('Whoops! Contact creation failed!');
+        return redirect()->back()->withInput();
     }
+
+
 
     public function edit($id)
     {
