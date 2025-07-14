@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>SwapNet</title>
+    <title>bizCONNECT</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -44,9 +44,7 @@
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
             <a href="#" class="logo d-flex align-items-center me-auto">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                 <img src="images/swapnet.png" alt="">
-                <h1 class="sitename">SwapNet</h1>
+                <img src="images/bizconnect.png" alt="">
             </a>
 
             <nav id="navmenu" class="navmenu">
@@ -67,13 +65,14 @@
                 <div class="row gy-4">
                     <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center"
                         data-aos="zoom-out">
-                        <h1>Better Organization for Your Contacts</h1>
-                        <p>Save and manage contacts by category with user permissions, ensuring a structured and secure way to organize your connections.</p>
+                        <h1>Together we go</h1>
+                        <p>Connect, collaborate, and grow your network seamlessly.
+                            BizConnect empowers businesses and professionals to build strong relationships and achieve success side by side</p>
                         @if (Route::has('login'))
                             @auth
-                            <div class="d-flex">
-                                <a href="{{ route('admin.index') }}" class="btn-get-started">Go to Dashbord</a>
-                            </div>
+                                <div class="d-flex">
+                                    <a href="{{ route('admin.index') }}" class="btn-get-started">Go to Dashbord</a>
+                                </div>
                             @else
                                 <div class="d-flex">
                                     <a href="{{ route('login') }}" class="btn-get-started">Login</a>
@@ -104,7 +103,7 @@
     <footer id="footer" class="footer">
 
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">SwapNet</strong> <span>All Rights Reserved</span>
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">bizCONNECT</strong> <span>All Rights Reserved</span>
             </p>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
