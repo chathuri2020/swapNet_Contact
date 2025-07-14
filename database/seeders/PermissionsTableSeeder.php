@@ -25,13 +25,17 @@ class PermissionsTableSeeder extends Seeder
             'permission_create',
             'permission_edit',
             'permission_delete',
+            'contact_access',
+            'contact_create',
+            'category_access',
+            'category_create',
         ];
 
         foreach ($permissions as $permission) {
-            // Check if the permission already exists
-            if (!Permission::where('name', $permission)->exists()) {
-                Permission::create(['name' => $permission, 'guard_name' => 'web']);
-            }
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
         }
     }
 }
